@@ -2746,7 +2746,8 @@
   "projectFileDependencyGroups": {
     "net8.0": [
       "CollegeEnrolment.Data >= 1.0.0",
-      "CollegeEnrolment.Domain >= 1.0.0"
+      "CollegeEnrolment.Domain >= 1.0.0",
+      "Microsoft.EntityFrameworkCore.SqlServer >= 8.0.11"
     ]
   },
   "packageFolders": {
@@ -2805,6 +2806,12 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.SqlServer": {
+            "target": "Package",
+            "version": "[8.0.11, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
