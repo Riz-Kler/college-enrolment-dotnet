@@ -1,0 +1,35 @@
+@model List<CollegeEnrolment.Data.Reports.CourseCapacityReportRow>
+@{
+    ViewData["Title"] = "Course Capacity Report";
+    var year = (string)(ViewBag.Year ?? "2025/26");
+}
+
+<h2>Course Capacity Report (@year)</h2>
+
+<p>
+    Shows active enrolments vs capacity per course offering.
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Academic Year</th>
+            <th>Capacity</th>
+            <th>Active Enrolments</th>
+            <th>Utilisation</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var r in Model)
+    {
+        <tr>
+            <td>@r.CourseCode - @r.CourseTitle</td>
+            <td>@r.AcademicYear</td>
+            <td>@r.Capacity</td>
+            <td>@r.ActiveEnrolments</td>
+            <td>@r.UtilisationPercent %</td>
+        </tr>
+    }
+    </tbody>
+</table>
