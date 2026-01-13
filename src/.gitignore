@@ -482,3 +482,37 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# --- Project specific ---
+# Local secrets / dev config
+appsettings.Development.json
+appsettings.*.local.json
+*.secrets.json
+secrets.json
+
+# User-specific IDE stuff
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+logs/
+*.log
+
+# Local database files (if you ever use LocalDB / SQLite)
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite3
+
+# EF Core migrations snapshot can be committed (recommended), so DON'T ignore Migrations/*
+# But do ignore generated SQL scripts if you create them
+*.sql
+
+# OS junk
+.DS_Store
+Thumbs.db
