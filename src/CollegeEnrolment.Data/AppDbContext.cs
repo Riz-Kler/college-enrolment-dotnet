@@ -1,5 +1,7 @@
 using CollegeEnrolment.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using CollegeEnrolment.Data.Reports;
+
 
 namespace CollegeEnrolment.Data;
 
@@ -13,6 +15,8 @@ public sealed class AppDbContext : DbContext
     public DbSet<TimetableSlot> TimetableSlots => Set<TimetableSlot>();
     public DbSet<Enrolment> Enrolments => Set<Enrolment>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
+    public DbSet<CourseCapacityReportRow> CourseCapacityReport => Set<CourseCapacityReportRow>();
+
 
     protected override void OnModelCreating(ModelBuilder model)
     {
@@ -121,5 +125,12 @@ public sealed class AppDbContext : DbContext
             e.HasIndex(x => x.TimestampUtc);
             e.HasIndex(x => x.Actor);
         });
+
+        model.Entity<CourseCapacityReportRow>(e =>
+        {
+            e.HasNoKey();
+            e.ToView(null); // not mapped to a real table/view
+        });
+
     }
 }
