@@ -1,6 +1,4 @@
-using System;
 using CollegeEnrolment.Domain.Enums;
-
 namespace CollegeEnrolment.Domain.Entities;
 
 public sealed class Enrolment
@@ -14,6 +12,5 @@ public sealed class Enrolment
     public CourseOffering CourseOffering { get; set; } = null!;
 
     public EnrolmentStatus Status { get; set; } = EnrolmentStatus.Active;
-
     public DateTime CreatedAtUtc { get; set; } = DateTime.UtcNow;
 }

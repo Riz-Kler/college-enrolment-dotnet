@@ -1,0 +1,70 @@
+@model CollegeEnrolment.Domain.Entities.Student
+@using CollegeEnrolment.Domain.Enums
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<h2 class="mb-3">Student Details</h2>
+
+<div class="mb-4">
+    <dl class="row">
+        <dt class="col-sm-3">Student Number</dt>
+        <dd class="col-sm-9">@Model.StudentNumber</dd>
+
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">@Model.FirstName @Model.LastName</dd>
+
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+    </dl>
+
+    <a class="btn btn-secondary" asp-action="Index">Back</a>
+    <a class="btn btn-primary" asp-controller="Enrolments" asp-action="Create">Enrol student</a>
+</div>
+
+<hr />
+
+<h3 class="mb-3">Enrolments</h3>
+
+@if (Model.Enrolments == null || !Model.Enrolments.Any())
+{
+    <p class="text-muted">No enrolments yet.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Academic Year</th>
+                <th>Status</th>
+                <th style="width: 160px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var e in Model.Enrolments.OrderByDescending(x => x.CreatedAtUtc))
+        {
+            <tr>
+                <td>@e.CourseOffering.Course.Code - @e.CourseOffering.Course.Title</td>
+                <td>@e.CourseOffering.AcademicYear</td>
+                <td>@e.Status</td>
+                <td>
+                    @if (e.Status == EnrolmentStatus.Active)
+                    {
+                        <form asp-controller="Enrolments" asp-action="Withdraw" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@e.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Withdraw</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <span class="text-muted">—</span>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
