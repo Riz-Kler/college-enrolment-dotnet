@@ -1,0 +1,46 @@
+@model CollegeEnrolment.Web.ViewModels.EnrolStudentVm
+
+@{
+    ViewData["Title"] = "New Enrolment";
+}
+
+<div class="mb-3">
+    <h1 class="display-6 mb-0">New Enrolment</h1>
+    <div class="text-muted">Link a student to a course offering.</div>
+</div>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        Please fix the errors below and try again.
+    </div>
+}
+
+<form asp-action="Create" method="post" class="card p-3">
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="StudentId" class="form-label">Student</label>
+        <select asp-for="StudentId" class="form-select" asp-items="(IEnumerable<SelectListItem>)ViewBag.Students">
+            <option value="">-- select student --</option>
+        </select>
+        <span asp-validation-for="StudentId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CourseOfferingId" class="form-label">Course offering</label>
+        <select asp-for="CourseOfferingId" class="form-select" asp-items="(IEnumerable<SelectListItem>)ViewBag.Offerings">
+            <option value="">-- select course offering --</option>
+        </select>
+        <span asp-validation-for="CourseOfferingId" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Create enrolment</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

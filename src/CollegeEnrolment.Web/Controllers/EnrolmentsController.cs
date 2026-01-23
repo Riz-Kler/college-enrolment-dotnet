@@ -1,11 +1,11 @@
 using CollegeEnrolment.Data;
 using CollegeEnrolment.Domain.Entities;
+using CollegeEnrolment.Domain.Enums;
 using CollegeEnrolment.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-using CollegeEnrolment.Domain.Enums;
 namespace CollegeEnrolment.Web.Controllers;
 
 public sealed class EnrolmentsController : Controller
@@ -13,6 +13,22 @@ public sealed class EnrolmentsController : Controller
     private readonly AppDbContext _db;
     public EnrolmentsController(AppDbContext db) => _db = db;
 
+    // NEW: /Enrolments shows a clean list + CTA
+    public async Task<IActionResult> Index(CancellationToken ct)
+    {
+        var items = await _db.Enrolments
+            .AsNoTracking()
+            .Include(e => e.Student)
+            .Include(e => e.CourseOffering)
+                .ThenInclude(o => o.Course)
+            .OrderByDescending(e => e.CreatedAtUtc)
+            .Take(200)
+            .ToListAsync(ct);
+
+        return View(items);
+    }
+
+    [HttpGet]
     public async Task<IActionResult> Create(CancellationToken ct)
     {
         var students = await _db.Students.AsNoTracking()
@@ -24,8 +40,13 @@ public sealed class EnrolmentsController : Controller
             .OrderBy(o => o.Course.Code)
             .ToListAsync(ct);
 
-        ViewBag.Students = students.Select(s => new SelectListItem($"{s.StudentNumber} - {s.FirstName} {s.LastName}", s.Id.ToString())).ToList();
-        ViewBag.Offerings = offerings.Select(o => new SelectListItem($"{o.Course.Code} - {o.Course.Title} ({o.AcademicYear})", o.Id.ToString())).ToList();
+        ViewBag.Students = students
+            .Select(s => new SelectListItem($"{s.StudentNumber} - {s.FirstName} {s.LastName}", s.Id.ToString()))
+            .ToList();
+
+        ViewBag.Offerings = offerings
+            .Select(o => new SelectListItem($"{o.Course.Code} - {o.Course.Title} ({o.AcademicYear})", o.Id.ToString()))
+            .ToList();
 
         return View(new EnrolStudentVm());
     }
@@ -51,8 +72,7 @@ public sealed class EnrolmentsController : Controller
         }
 
         var already = await _db.Enrolments.AnyAsync(e =>
-            e.StudentId == vm.StudentId &&
-            e.CourseOfferingId == vm.CourseOfferingId, ct);
+            e.StudentId == vm.StudentId && e.CourseOfferingId == vm.CourseOfferingId, ct);
 
         if (already)
         {
@@ -79,7 +99,9 @@ public sealed class EnrolmentsController : Controller
         });
 
         await _db.SaveChangesAsync(ct);
-        return RedirectToAction("Index", "Students");
+
+        // More “demo-friendly” than dumping you into Students
+        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost]
@@ -104,6 +126,6 @@ public sealed class EnrolmentsController : Controller
         });
 
         await _db.SaveChangesAsync(ct);
-        return RedirectToAction("Details", "Students", new { id = enrol.StudentId });
+        return RedirectToAction(nameof(Index));
     }
 }

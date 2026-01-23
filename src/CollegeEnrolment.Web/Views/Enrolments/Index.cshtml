@@ -1,0 +1,71 @@
+@using CollegeEnrolment.Domain.Enums
+@model IReadOnlyList<CollegeEnrolment.Domain.Entities.Enrolment>
+
+@{
+    ViewData["Title"] = "Enrolments";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1 class="display-6 mb-0">Enrolments</h1>
+        <div class="text-muted">Recent enrolments and status changes.</div>
+    </div>
+    <a class="btn btn-primary" asp-controller="Enrolments" asp-action="Create">New enrolment</a>
+</div>
+
+@if (Model is null || Model.Count == 0)
+{
+    <div class="alert alert-info">
+        No enrolments yet. Click <strong>New enrolment</strong> to add one.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>Student</th>
+                <th>Course</th>
+                <th>Academic Year</th>
+                <th>Status</th>
+                <th class="text-end">Created</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var e in Model)
+            {
+                var statusBadge = e.Status == EnrolmentStatus.Active ? "bg-success" : "bg-secondary";
+
+                <tr>
+                    <td>
+                        <div class="fw-semibold">@e.Student.StudentNumber</div>
+                        <div class="text-muted">@e.Student.FirstName @e.Student.LastName</div>
+                    </td>
+                    <td>
+                        <div class="fw-semibold">@e.CourseOffering.Course.Code</div>
+                        <div class="text-muted">@e.CourseOffering.Course.Title</div>
+                    </td>
+                    <td>@e.CourseOffering.AcademicYear</td>
+                    <td><span class="badge @statusBadge">@e.Status</span></td>
+                    <td class="text-end">@e.CreatedAtUtc.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                    <td class="text-end">
+                        @if (e.Status == EnrolmentStatus.Active)
+                        {
+                            <form asp-controller="Enrolments" asp-action="Withdraw" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@e.Id" />
+                                <button class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Withdraw this enrolment?');">
+                                    Withdraw
+                                </button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
