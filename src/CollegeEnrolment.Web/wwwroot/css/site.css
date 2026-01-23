@@ -1,31 +1,126 @@
-html {
-  font-size: 14px;
+:root {
+  --ce-bg: #0b1220;
+  --ce-surface: rgba(255,255,255,0.06);
+  --ce-surface-2: rgba(255,255,255,0.10);
+  --ce-border: rgba(255,255,255,0.12);
+  --ce-text: #e7eefc;
+  --ce-muted: rgba(231,238,252,0.72);
+  --ce-accent: #6ea8fe;
+  --ce-accent-2: #8b5cf6;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Page background + default text */
 body {
-  margin-bottom: 60px;
+  background: radial-gradient(1200px 700px at 15% 10%, rgba(110,168,254,0.25), transparent 60%),
+              radial-gradient(900px 600px at 85% 15%, rgba(139,92,246,0.18), transparent 55%),
+              var(--ce-bg);
+  color: var(--ce-text);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Keep content readable */
+main .container,
+main .container-fluid {
+  color: var(--ce-text);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* Navbar */
+.navbar {
+  background: rgba(10, 16, 28, 0.92) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(10px);
+}
+.navbar .navbar-brand,
+.navbar .nav-link {
+  color: var(--ce-text) !important;
+}
+.navbar .nav-link:hover {
+  color: #ffffff !important;
+}
+
+/* “Card” surface used across pages */
+.ce-surface {
+  background: var(--ce-surface);
+  border: 1px solid var(--ce-border);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+}
+.ce-surface-header {
+  color: var(--ce-text);
+}
+.ce-muted {
+  color: var(--ce-muted);
+}
+
+/* Tables */
+.table {
+    background-color: #0b1220;
+    color: #e5e7eb;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table thead th {
+    background-color: #0f172a; /* dark slate */
+    color: #e5e7eb;
+    font-weight: 600;
+    border-bottom: 1px solid #1e293b;
+}
+
+.table tbody tr {
+    background-color: #0b1220;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #0e1627;
+}
+
+.table tbody tr:hover {
+    background-color: #162033;
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(90deg, var(--ce-accent), var(--ce-accent-2));
+  border: none;
+}
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+/* ✅ Dropdowns + selects (fix “blank items”) */
+.dropdown-menu {
+  background: #111a2e;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+}
+.dropdown-item {
+  color: var(--ce-text);
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  background: rgba(110,168,254,0.18);
+  color: #fff;
+}
+
+/* Select (bootstrap) */
+.form-select, .form-control {
+  background-color: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  color: var(--ce-text);
+}
+.form-select:focus, .form-control:focus {
+  background-color: rgba(255,255,255,0.08);
+  border-color: rgba(110,168,254,0.55);
+  box-shadow: 0 0 0 0.15rem rgba(110,168,254,0.25);
+}
+
+/* Native option styling (helps some browsers) */
+select option {
+  background: #111a2e;
+  color: var(--ce-text);
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid rgba(255,255,255,0.10);
+  background: rgba(10, 16, 28, 0.65);
 }

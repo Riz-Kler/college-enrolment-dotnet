@@ -1,0 +1,49 @@
+@model IEnumerable<CollegeEnrolment.Domain.Entities.Student>
+
+@{
+    ViewData["Title"] = "Students";
+    var q = (ViewBag.Q as string) ?? "";
+}
+
+<h2 class="mb-3">Students</h2>
+
+<div class="d-flex gap-2 align-items-center mb-3">
+    <form method="get" class="d-flex gap-2">
+        <input name="q" value="@q" class="form-control" style="width:320px"
+               placeholder="Search student number, name, email..." />
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+        @if (!string.IsNullOrWhiteSpace(q))
+        {
+            <a class="btn btn-outline-secondary" asp-action="Index">Clear</a>
+        }
+    </form>
+
+    <div class="ms-auto">
+        <a class="btn btn-primary" asp-action="Create">Register student</a>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student #</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th style="width: 120px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td>@s.StudentNumber</td>
+            <td>@s.FirstName @s.LastName</td>
+            <td>@s.Email</td>
+            <td>
+                <a class="btn btn-sm btn-outline-primary"
+                   asp-action="Details" asp-route-id="@s.Id">Details</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
