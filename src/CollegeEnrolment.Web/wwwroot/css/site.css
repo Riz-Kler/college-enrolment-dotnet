@@ -87,7 +87,7 @@ main .container-fluid {
   filter: brightness(1.05);
 }
 
-/* ✅ Dropdowns + selects (fix “blank items”) */
+/* Dropdowns + selects */
 .dropdown-menu {
   background: #111a2e;
   border: 1px solid rgba(255,255,255,0.12);
@@ -102,11 +102,24 @@ main .container-fluid {
 }
 
 /* Select (bootstrap) */
-.form-select, .form-control {
-  background-color: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.14);
-  color: var(--ce-text);
+/* Make selects readable in dark theme */
+.form-select,
+.form-control {
+  background-color: #ffffff !important;
+  color: #0b1220 !important;
 }
+
+.form-select option {
+  background-color: #ffffff !important;
+  color: #0b1220 !important;
+}
+
+/* Placeholder-ish */
+.form-select:disabled,
+.form-control::placeholder {
+  color: #6b7280 !important;
+}
+
 .form-select:focus, .form-control:focus {
   background-color: rgba(255,255,255,0.08);
   border-color: rgba(110,168,254,0.55);
@@ -120,7 +133,9 @@ select option {
 }
 
 /* Footer */
-.footer {
-  border-top: 1px solid rgba(255,255,255,0.10);
-  background: rgba(10, 16, 28, 0.65);
+hr { display: none !important; }
+
+footer {
+  border-top: none !important;
+  box-shadow: none !important;
 }

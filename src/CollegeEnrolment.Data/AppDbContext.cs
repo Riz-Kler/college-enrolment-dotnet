@@ -16,6 +16,8 @@ public sealed class AppDbContext : DbContext
     public DbSet<Enrolment> Enrolments => Set<Enrolment>();
     public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
     public DbSet<CourseCapacityReportRow> CourseCapacityReport => Set<CourseCapacityReportRow>();
+    public DbSet<StudentResult> StudentResults => Set<StudentResult>();
+
 
 
     protected override void OnModelCreating(ModelBuilder model)
@@ -132,5 +134,26 @@ public sealed class AppDbContext : DbContext
             e.ToView(null); // not mapped to a real table/view
         });
 
+        model.Entity<StudentResult>(e =>
+{
+            e.ToTable("StudentResults");
+            e.HasKey(x => x.Id);
+
+            e.Property(x => x.AcademicYear).HasMaxLength(10).IsRequired();
+            e.Property(x => x.FinalGrade).HasMaxLength(2).IsRequired();
+            e.Property(x => x.AttendancePercent).HasPrecision(5, 2);
+
+            e.HasOne(x => x.Student)
+                .WithMany()
+                .HasForeignKey(x => x.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            e.HasOne(x => x.Course)
+                .WithMany()
+                .HasForeignKey(x => x.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            e.HasIndex(x => new { x.StudentId, x.CourseId, x.AcademicYear }).IsUnique();
+        });
     }
 }
