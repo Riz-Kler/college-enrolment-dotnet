@@ -1,0 +1,57 @@
+@{
+    ViewData["Title"] = "AI Analysis";
+}
+
+<div class="container mt-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h1 class="mb-0">AI Analysis</h1>
+            <div class="text-muted">Outcomes, demand forecasting, and success signals from historical results.</div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Pass Rate by Subject (per year)</h5>
+                    <canvas id="chartPassRate" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Average Grade Points (per year)</h5>
+                    <canvas id="chartAvgGrade" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Demand Forecast (next academic year)</h5>
+                    <div class="small text-muted mb-2" id="forecastMeta"></div>
+                    <canvas id="chartForecast" height="140"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Success Signals</h5>
+                    <div class="small text-muted mb-2" id="signalsMeta"></div>
+                    <canvas id="chartSignals" height="220"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/ai-dashboard.js"></script>
+}
